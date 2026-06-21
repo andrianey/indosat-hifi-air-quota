@@ -3,7 +3,7 @@
   "name": "Indosat HiFi Air",
   "version": "0.1.0",
   "documentation": "https://github.com/andrianey/indosat-hifi-air-quota",
-  "requirements": [],
+  "requirements": ["aiohttp>=3.8.0"],
   "dependencies": [],
   "config_flow": true,
   "iot_class": "cloud_polling",
