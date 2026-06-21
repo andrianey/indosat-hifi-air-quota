@@ -91,21 +91,64 @@ class IndosatHifiAirConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle reconfiguration of the phone number."""
+        errors: dict[str, str] = {}
+        entry = self._get_reconfigure_entry()
+
+        if user_input is not None:
+            phone = "".join(c for c in user_input["msisdn"] if c.isdigit())
+            if not phone:
+                errors["base"] = "invalid_msisdn"
+            else:
+                normalized = _normalize_msisdn(phone)
+                try:
+                    api = IndosatHifiAirAPI(
+                        session=async_get_clientsession(self.hass)
+                    )
+                    await api.get_quota_data(normalized)
+                except IndosatAPIError:
+                    errors["base"] = "cannot_connect"
+                except Exception:  # pylint: disable=broad-except
+                    _LOGGER.exception("Unexpected exception")
+                    errors["base"] = "unexpected"
+                else:
+                    await self.async_set_unique_id(normalized)
+                    self._abort_if_unique_id_configured(
+                        updates={"msisdn": normalized}
+                    )
+                    return self.async_update_reload_and_abort(
+                        entry, data_updates={"msisdn": normalized}
+                    )
+
+        reconfigure_schema = vol.Schema(
+            {
+                vol.Required(
+                    "msisdn",
+                    default=entry.data.get("msisdn", ""),
+                ): str,
+            }
+        )
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=reconfigure_schema,
+            errors=errors,
+        )
+
     @staticmethod
     @callback
     def async_get_options_flow(
         config_entry: config_entries.ConfigEntry,
     ) -> config_entries.OptionsFlow:
         """Create the options flow."""
-        return IndosatHifiAirOptionsFlow(config_entry)
+        return IndosatHifiAirOptionsFlow()
 
 
 class IndosatHifiAirOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for Indosat HiFi Air."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow."""
-        self.config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
@@ -114,13 +157,20 @@ class IndosatHifiAirOptionsFlow(config_entries.OptionsFlow):
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 
+        entry = self.config_entry
         options_schema = vol.Schema(
             {
                 vol.Required(
+                    "name",
+                    default=entry.options.get(
+                        "name", entry.data.get("name", "")
+                    ),
+                ): str,
+                vol.Required(
                     "scan_interval",
-                    default=self.config_entry.options.get(
+                    default=entry.options.get(
                         "scan_interval",
-                        self.config_entry.data.get(
+                        entry.data.get(
                             "scan_interval", DEFAULT_SCAN_INTERVAL
                         ),
                     ),

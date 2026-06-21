@@ -26,14 +26,19 @@
   "options": {
     "step": {
       "init": {
-        "title": "Interval Pembaruan",
+        "title": "Pengaturan",
         "data": {
+          "name": "Nama Tampilan",
           "scan_interval": "Interval Pembaruan"
         },
         "data_description": {
+          "name": "Nama kustom yang ditampilkan di Home Assistant",
           "scan_interval": "Seberapa sering mengambil data kuota dari Indosat"
         }
       }
     }
+  },
+  "system_health": {
+    "info": {}
   }
 }

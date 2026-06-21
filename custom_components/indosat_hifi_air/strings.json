@@ -26,14 +26,19 @@
   "options": {
     "step": {
       "init": {
-        "title": "Update Interval",
+        "title": "Options",
         "data": {
+          "name": "Display Name",
           "scan_interval": "Update Interval"
         },
         "data_description": {
+          "name": "Custom name shown in Home Assistant for this device",
           "scan_interval": "How often to fetch quota data from Indosat"
         }
       }
     }
+  },
+  "system_health": {
+    "info": {}
   }
 }
