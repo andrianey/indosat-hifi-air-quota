@@ -1,0 +1,9 @@
+{
+  "name": "Indosat HiFi Air",
+  "content_in_root": false,
+  "filename": "custom_components/indosat_hifi_air/__init__.py",
+  "render_readme": true,
+  "zip_release": false,
+  "domains": ["sensor"],
+  "country": "ID"
+}

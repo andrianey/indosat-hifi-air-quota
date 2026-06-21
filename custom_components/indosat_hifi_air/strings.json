@@ -1,0 +1,19 @@
+{
+  "title": "Indosat HiFi Air",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Indosat HiFi Air",
+        "description": "Enter your HiFi Air phone number (MSISDN)",
+        "data": {
+          "msisdn": "Phone Number"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to reach Indosat HiFi Air API",
+      "invalid_msisdn": "Invalid phone number",
+      "unexpected": "Unexpected error"
+    }
+  }
+}
