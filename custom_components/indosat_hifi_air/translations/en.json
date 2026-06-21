@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Connect Indosat HiFi Air",
-        "description": "Enter your HiFi Air phone number (MSISDN)",
+        "description": "Enter your HiFi Air phone number. Accepts: 0858..., 62858..., or 8588...",
         "data": {
           "msisdn": "Phone Number"
         }

@@ -10,6 +10,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import IndosatAPIError, IndosatHifiAirAPI
 from .const import DOMAIN
@@ -21,7 +22,7 @@ DATA_SCHEMA = vol.Schema({vol.Required("msisdn"): str})
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, str]:
     """Validate the user input by hitting the API."""
-    api = IndosatHifiAirAPI()
+    api = IndosatHifiAirAPI(session=async_get_clientsession(hass))
     try:
         # Full flow: checkaltno + validatecallplan + quota
         await api.get_quota_data(data["msisdn"])

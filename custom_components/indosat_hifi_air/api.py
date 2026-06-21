@@ -79,10 +79,12 @@ def _build_uid() -> str:
 
 
 def _normalize_msisdn(phone: str) -> str:
-    """Normalize phone to 62... format."""
+    """Normalize phone to 62... format. Accepts 0..., 62..., or bare 8..."""
     digits = "".join(c for c in phone if c.isdigit())
     if digits.startswith("0"):
         digits = "62" + digits[1:]
+    elif not digits.startswith("62"):
+        digits = "62" + digits
     return digits
 
 
@@ -139,7 +141,8 @@ class IndosatHifiAirAPI:
         headers = await self._headers(body, token, x_app_os)
         url = f"{base_url}{endpoint}"
 
-        async with self._session.post(url, headers=headers, json=body) as resp:
+        body_json = json.dumps(body, separators=(",", ":"))
+        async with self._session.post(url, headers=headers, data=body_json) as resp:
             text = await resp.text()
             data = json.loads(text)
             # Update token if returned in header
@@ -204,17 +207,17 @@ class IndosatHifiAirAPI:
 
         # Step 2: check alternate number
         alt = await self.checkaltno(phone)
-        if alt.get("status") != "0":
+        if str(alt.get("status", "1")) != "0":
             raise IndosatAPIError(f"checkaltno failed: {alt.get('message', alt)}")
 
         # Step 3: validate call plan (this returns the real user token)
         val = await self.validate_callplan(phone)
-        if val.get("status") != "0":
+        if str(val.get("status", "1")) != "0":
             raise IndosatAPIError(f"validatecallplan failed: {val.get('message', val)}")
 
         # Step 4: get quota
         quota = await self.get_quota(phone)
-        if quota.get("status") != "0":
+        if str(quota.get("status", "1")) != "0":
             raise IndosatAPIError(f"quota/details failed: {quota.get('message', quota)}")
 
         return quota.get("data", {})

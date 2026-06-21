@@ -6,6 +6,7 @@ from datetime import timedelta
 import logging
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import IndosatAPIError, IndosatHifiAirAPI
@@ -20,7 +21,7 @@ class IndosatHifiAirCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, phone: str) -> None:
         """Initialize the coordinator."""
         self.phone = phone
-        self.api = IndosatHifiAirAPI()
+        self.api = IndosatHifiAirAPI(session=async_get_clientsession(hass))
         super().__init__(
             hass,
             _LOGGER,
@@ -34,7 +35,5 @@ class IndosatHifiAirCoordinator(DataUpdateCoordinator):
             data = await self.api.get_quota_data(self.phone)
         except IndosatAPIError as err:
             raise UpdateFailed(err) from err
-        finally:
-            await self.api.close()
         return data
 
