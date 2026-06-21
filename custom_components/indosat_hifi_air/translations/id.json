@@ -6,14 +6,34 @@
         "title": "Hubungkan Indosat HiFi Air",
         "description": "Masukkan nomor HiFi Air Anda. Format: 0858..., 62858..., atau 8588...",
         "data": {
-          "msisdn": "Nomor Telepon"
+          "msisdn": "Nomor Telepon",
+          "name": "Nama Tampilan",
+          "scan_interval": "Interval Pembaruan"
+        },
+        "data_description": {
+          "name": "Nama kustom yang ditampilkan di Home Assistant",
+          "scan_interval": "Seberapa sering mengambil data kuota dari Indosat"
         }
       }
     },
     "error": {
       "cannot_connect": "Tidak dapat menghubungi API Indosat HiFi Air",
       "invalid_msisdn": "Nomor telepon tidak valid",
+      "invalid_name": "Nama tampilan wajib diisi",
       "unexpected": "Terjadi kesalahan"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Interval Pembaruan",
+        "data": {
+          "scan_interval": "Interval Pembaruan"
+        },
+        "data_description": {
+          "scan_interval": "Seberapa sering mengambil data kuota dari Indosat"
+        }
+      }
     }
   }
 }

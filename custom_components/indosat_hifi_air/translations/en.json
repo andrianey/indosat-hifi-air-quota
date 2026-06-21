@@ -6,14 +6,34 @@
         "title": "Connect Indosat HiFi Air",
         "description": "Enter your HiFi Air phone number. Accepts: 0858..., 62858..., or 8588...",
         "data": {
-          "msisdn": "Phone Number"
+          "msisdn": "Phone Number",
+          "name": "Display Name",
+          "scan_interval": "Update Interval"
+        },
+        "data_description": {
+          "name": "Custom name shown in Home Assistant for this device",
+          "scan_interval": "How often to fetch quota data from Indosat"
         }
       }
     },
     "error": {
       "cannot_connect": "Unable to reach Indosat HiFi Air API",
       "invalid_msisdn": "Invalid phone number",
+      "invalid_name": "Display name is required",
       "unexpected": "Unexpected error"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Update Interval",
+        "data": {
+          "scan_interval": "Update Interval"
+        },
+        "data_description": {
+          "scan_interval": "How often to fetch quota data from Indosat"
+        }
+      }
     }
   }
 }

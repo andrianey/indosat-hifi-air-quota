@@ -24,3 +24,11 @@ ENDPOINT_QUOTA_DETAILS = "/api/hifiair/payment/quota/details/v2"
 
 UPDATE_INTERVAL_MINUTES = 60
 
+SCAN_INTERVAL_OPTIONS = {
+    "30": 30,
+    "60": 60,
+    "180": 180,
+    "360": 360,
+}
+DEFAULT_SCAN_INTERVAL = "60"
+

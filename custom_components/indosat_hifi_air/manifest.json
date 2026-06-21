@@ -3,11 +3,12 @@
   "name": "Indosat HiFi Air",
   "version": "0.1.0",
   "documentation": "https://github.com/andrianey/indosat-hifi-air-quota",
-  "requirements": ["aiohttp>=3.8.0"],
+  "requirements": [],
   "dependencies": [],
   "config_flow": true,
   "iot_class": "cloud_polling",
   "codeowners": ["@andrianey"],
   "loggers": ["custom_components.indosat_hifi_air"],
-  "integration_type": "service"
+  "integration_type": "service",
+  "homeassistant": "2024.1.0"
 }

@@ -4,5 +4,6 @@
   "render_readme": true,
   "zip_release": false,
   "domains": ["sensor"],
-  "country": "ID"
+  "country": ["ID"],
+  "homeassistant": "2024.1.0"
 }
