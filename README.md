@@ -6,12 +6,14 @@ A HACS custom integration for Home Assistant that monitors your **Indosat HiFi A
 
 ## Features
 
-Exposes **5 sensors** per account:
+Exposes **7 sensors** per account:
 
 | Sensor | Description |
 |---|---|
 | Remaining Quota | Current remaining data (GB) |
 | Total Quota | Total allocated data for the period (GB) |
+| Used Quota | Data already consumed (GB) |
+| Remaining Days | Days left until package expiry |
 | Expiry Date | Date when the current package expires |
 | Account Status | Active / Inactive status of the account |
 | Package Name | Name of the subscribed plan |
@@ -58,6 +60,8 @@ After setup, the following entities are created (named with your custom display 
 
 - `sensor.indosat_hifi_air_<name>_remaining_quota`
 - `sensor.indosat_hifi_air_<name>_total_quota`
+- `sensor.indosat_hifi_air_<name>_used_quota`
+- `sensor.indosat_hifi_air_<name>_remaining_days`
 - `sensor.indosat_hifi_air_<name>_expiry_date`
 - `sensor.indosat_hifi_air_<name>_account_status`
 - `sensor.indosat_hifi_air_<name>_package_name`
