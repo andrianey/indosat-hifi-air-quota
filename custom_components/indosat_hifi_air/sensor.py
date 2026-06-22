@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfInformation
@@ -24,6 +26,8 @@ async def async_setup_entry(
     sensors = [
         IndosatQuotaSensor(coordinator, "remaining_quota", "Remaining Quota", UnitOfInformation.GIGABYTES, SensorStateClass.MEASUREMENT),
         IndosatQuotaSensor(coordinator, "total_quota", "Total Quota", UnitOfInformation.GIGABYTES),
+        IndosatQuotaSensor(coordinator, "used_quota", "Used Quota", UnitOfInformation.GIGABYTES, SensorStateClass.MEASUREMENT),
+        IndosatQuotaSensor(coordinator, "remaining_days", "Remaining Days", "d", SensorStateClass.MEASUREMENT),
         IndosatQuotaSensor(coordinator, "expiry_date", "Expiry Date", None),
         IndosatQuotaSensor(coordinator, "account_status", "Account Status", None),
         IndosatQuotaSensor(coordinator, "package_name", "Package Name", None),
@@ -72,6 +76,27 @@ class IndosatQuotaSensor(CoordinatorEntity, SensorEntity):
                     return float(val)
                 except (TypeError, ValueError):
                     return val
+            return None
+        if self._key == "used_quota":
+            pkgs = data.get("packages", [])
+            if pkgs:
+                initial = pkgs[0].get("packageInitialQuota")
+                remaining = pkgs[0].get("packageRemainingQuota")
+                try:
+                    return round(float(initial) - float(remaining), 2)
+                except (TypeError, ValueError):
+                    return None
+            return None
+        if self._key == "remaining_days":
+            account = data.get("accountInfo", {})
+            raw = account.get("expiryDate")
+            if raw and len(raw) == 8:
+                try:
+                    expiry = date(int(raw[:4]), int(raw[4:6]), int(raw[6:]))
+                    delta = (expiry - date.today()).days
+                    return delta if delta >= 0 else 0
+                except (TypeError, ValueError):
+                    return None
             return None
         if self._key == "expiry_date":
             account = data.get("accountInfo", {})
