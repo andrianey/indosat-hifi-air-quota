@@ -64,10 +64,6 @@ After setup, the following entities are created (named with your custom display 
 
 The entity IDs are stable and based on the normalized MSISDN internally, so renaming the display name won't break automations.
 
-## Branding
-
-Custom icons and logos are included. Dark variants are available in the `brand/` folder for future official [Home Assistant Brands](https://github.com/home-assistant/brands) submission.
-
 ## License
 
 MIT
